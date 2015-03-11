@@ -332,8 +332,8 @@ int speed, int effect, qboolean hyper)
    vec3_t      end;
    
    VectorNormalize (dir);
-   
-   if(effect & EF_BLASTER)// if blaster, spawn blaster bolt
+   //dont want this interfering with the regular Blaster so this checks if its a blaster and if it is, it fires a normal blaster
+   if(effect & EF_BLASTER)
    {
       bolt = G_Spawn();
       VectorCopy (start, bolt->s.origin);
@@ -346,8 +346,7 @@ int speed, int effect, qboolean hyper)
       bolt->s.effects |= effect;
       VectorClear (bolt->mins);
       VectorClear (bolt->maxs);
-      bolt->s.modelindex =
-gi.modelindex("models/objects/laser/tris.md2");
+      bolt->s.modelindex = gi.modelindex("models/objects/laser/tris.md2");
       bolt->s.sound = gi.soundindex("misc/lasfly.wav");
       bolt->owner = self;
       bolt->touch = blaster_touch;
@@ -371,16 +370,11 @@ MASK_SHOT);
    }
    else // laser hyperblaster
    {
-      // set origin of laser beam at gun barrel.
-      // note that the barrel is rotating, so the beams will 
-      // originate from different places each time.
+      //sets the laser beam at the appropriate position of the HB barrel. Spin effect.
       VectorMA (start, 8192, dir, end);
       VectorCopy (start, from);
-      // trace for end point of laser beam.
-      // the laser aim is perfect. 
-      // no random aim like the machinegun
+      //traces end point of the laser beam in a perfectly straight accurate line
       tr = gi.trace (from, NULL, NULL, end, self, MASK_SHOT);      
-      // send laser beam temp entity to clients
       VectorCopy (tr.endpos, from);
       gi.WriteByte (svc_temp_entity);
       gi.WriteByte (TE_BFG_LASER);      
@@ -392,8 +386,7 @@ MASK_SHOT);
          T_Damage (tr.ent, self, self, dir, tr.endpos, tr.plane.normal,
 damage, 0, 0, MOD_HYPERBLASTER);
       else if (!((tr.surface) && (tr.surface->flags & SURF_SKY)))
-      {  // hit a brush, send clients 
-         // a light flash and sparks temp entity.
+      {  //light flash entity upon contact
          gi.WriteByte (svc_temp_entity);
          gi.WriteByte (TE_BLASTER);
          gi.WritePosition (tr.endpos);
