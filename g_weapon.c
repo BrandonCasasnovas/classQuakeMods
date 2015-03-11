@@ -330,7 +330,8 @@ int speed, int effect, qboolean hyper)
    trace_t     tr;
    vec3_t      from;
    vec3_t      end;
-   
+   vec3_t	   origin;
+
    VectorNormalize (dir);
    //dont want this interfering with the regular Blaster so this checks if its a blaster and if it is, it fires a normal blaster
    if(effect & EF_BLASTER)
