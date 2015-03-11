@@ -1213,9 +1213,9 @@ void Weapon_Shotgun (edict_t *ent)
 	static int	pause_frames[]	= {22, 28, 34, 0};
 	static int	fire_frames[]	= {8, 9, 0};
 
-	Weapon_Generic (ent, 7, 18, 36, 39, pause_frames, fire_frames, weapon_shotgun_fire);
+	Weapon_Generic (ent, 7, 9, 36, 39, pause_frames, fire_frames, weapon_shotgun_fire); 
 }
-
+//Really easy fix here - just changed the Fire Rate frame form 18 to 9, making the shotgun  basically semi-auto)
 
 void weapon_supershotgun_fire (edict_t *ent)
 {

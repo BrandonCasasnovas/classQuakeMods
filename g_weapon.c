@@ -669,7 +669,7 @@ void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed
 	rocket->s.sound = gi.soundindex ("weapons/rockfly.wav");
 	rocket->classname = "rocket";
 
-	// see if this is a player and if they have homing state on (which should always be on because of homing_state function defined in g_local.h
+	// see if this is a player and if they have homing state on (which should always be on because of homing_state function defined in g_local.h)
 	if (self->client && self->client->pers.homing_state)
 	{
 		// if player has rocket homing state is active
