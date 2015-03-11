@@ -835,6 +835,8 @@ typedef struct
 	int			max_slugs;
 
 	gitem_t		*weapon;
+	qboolean	homing_state;	// are homing missiles active state
+
 	gitem_t		*lastweapon;
 
 	int			power_cubes;	// used for tracking the cubes in coop games

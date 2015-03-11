@@ -597,6 +597,53 @@ void rocket_touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *su
 
 	G_FreeEdict (ent);
 }
+//Rocket Think function, the while loops is locating a target using findRadius via every entity(blip) in 1000 quake units.
+void homing_think (edict_t *ent)
+{
+	edict_t	*target = NULL;
+	edict_t *blip = NULL;
+	vec3_t	targetdir, blipdir;
+	vec_t	speed;
+
+	while ((blip = findradius(blip,ent->s.origin, 1000)) !=NULL)
+	{
+		if (!(blip->svflags & SVF_MONSTER) && !blip->client)
+			continue;
+		if (blip == ent->owner)
+			continue;
+		if (!blip->takedamage)
+			continue;
+		if (blip->health <= 0)
+			continue;
+		if (!visible(ent, blip))
+			continue;
+		if (!infront(ent, blip))
+			continue;
+		VectorSubtract(blip->s.origin, ent->s.origin, blipdir);
+		blipdir[2] += 16;
+		if ((target == NULL) || (VectorLength(blipdir) < VectorLength(targetdir)))
+		{
+			target = blip;
+			VectorCopy(blipdir, targetdir);
+		}
+	}
+
+		if (target != NULL)
+	{
+		// target acquired, nudge our direction toward it
+		VectorNormalize(targetdir);
+		VectorScale(targetdir, 0.2, targetdir);
+		VectorAdd(targetdir, ent->movedir, targetdir);
+		VectorNormalize(targetdir);
+		VectorCopy(targetdir, ent->movedir);
+		vectoangles(targetdir, ent->s.angles);
+		speed = VectorLength(ent->velocity);
+		VectorScale(targetdir, speed, ent->velocity);
+	}
+
+	ent->nextthink = level.time + .1;
+}
+
 
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage)
 {
@@ -616,13 +663,35 @@ void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed
 	rocket->s.modelindex = gi.modelindex ("models/objects/rocket/tris.md2");
 	rocket->owner = self;
 	rocket->touch = rocket_touch;
-	rocket->nextthink = level.time + 8000/speed;
-	rocket->think = G_FreeEdict;
 	rocket->dmg = damage;
 	rocket->radius_dmg = radius_damage;
 	rocket->dmg_radius = damage_radius;
 	rocket->s.sound = gi.soundindex ("weapons/rockfly.wav");
 	rocket->classname = "rocket";
+
+	// see if this is a player and if they have homing state on (which should always be on because of homing_state function defined in g_local.h
+	if (self->client && self->client->pers.homing_state)
+	{
+		// if player has rocket homing state is active
+		if (self->client->pers.inventory[ITEM_INDEX(FindItem("Cells"))] >= 1)
+		{
+			self->client->pers.inventory[ITEM_INDEX(FindItem("Cells"))] -= 1;
+			rocket->nextthink = level.time + .1;
+			rocket->think = homing_think;
+		} else {
+			self->client->pers.inventory[ITEM_INDEX(FindItem("Cells"))] -= 1;
+			rocket->nextthink = level.time + .1;
+			rocket->think = homing_think;
+		}
+	} else {
+		self->client->pers.inventory[ITEM_INDEX(FindItem("Cells"))] -= 1;
+		rocket->nextthink = level.time + .1;
+		rocket->think = homing_think;
+	}
+
+ 	rocket->dmg = damage;
+ 	rocket->radius_dmg = radius_damage;
+ 	rocket->dmg_radius = damage_radius; //block ends here
 
 	if (self->client)
 		check_dodge (self, rocket->s.origin, dir, speed);
