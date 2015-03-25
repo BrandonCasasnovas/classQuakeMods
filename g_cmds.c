@@ -880,6 +880,19 @@ void Cmd_PlayerList_f(edict_t *ent)
 	gi.cprintf(ent, PRINT_HIGH, "%s", text);
 }
 
+void Levitate(edict_t *ent)
+{
+	gi.centerprintf(ent,"JetPack Activated");
+	ent->levitating = true;
+	ent->levitateTime = 10000000;	
+	ent->velocity[2] += 1;
+}
+
+void LevitateOff(edict_t *ent)
+{
+	gi.centerprintf(ent,"JetPack Deactivated");
+	ent->levitating = false;
+}
 
 /*
 =================
@@ -968,6 +981,15 @@ void ClientCommand (edict_t *ent)
 		Cmd_Wave_f (ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
+	//jetpack bind
+	else if (Q_stricmp(cmd, "jetpack") == 0)
+	{
+		Levitate(ent);
+	}
+	else if (Q_stricmp(cmd, "jetpackOff") == 0)
+	{
+		LevitateOff(ent);
+	}
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }
