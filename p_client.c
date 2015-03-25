@@ -610,6 +610,7 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.homing_state	= 1; //This sets the homing state to on by default
 
 	client->pers.connected = true;
+
 }
 
 
@@ -618,6 +619,7 @@ void InitClientResp (gclient_t *client)
 	memset (&client->resp, 0, sizeof(client->resp));
 	client->resp.enterframe = level.framenum;
 	client->resp.coop_respawn = client->pers;
+
 }
 
 /*
@@ -893,6 +895,7 @@ void	SelectSpawnPoint (edict_t *ent, vec3_t origin, vec3_t angles)
 	VectorCopy (spot->s.origin, origin);
 	origin[2] += 9;
 	VectorCopy (spot->s.angles, angles);
+	
 }
 
 //======================================================================
@@ -1105,6 +1108,7 @@ void PutClientInServer (edict_t *ent)
 		memcpy (userinfo, client->pers.userinfo, sizeof(userinfo));
 		InitClientPersistant (client);
 		ClientUserinfoChanged (ent, userinfo);
+		
 	}
 	else if (coop->value)
 	{
@@ -1240,10 +1244,105 @@ void PutClientInServer (edict_t *ent)
 	ChangeWeapon (ent);
 }
 
+void GetArmed (edict_t *ent)
+{
+		
+		edict_t *assault, *shotgun, *railgun, *grenade, *rocketLauncher, *hyperBlaster, *superShotgun, *grenadeLauncher, *chainGun, *BFG;
+
+		//gives each blank entity a space in memory
+		assault = G_Spawn();
+		shotgun = G_Spawn();
+		railgun = G_Spawn();
+		grenade = G_Spawn();
+		rocketLauncher = G_Spawn();
+		hyperBlaster = G_Spawn();
+		superShotgun = G_Spawn();
+		grenadeLauncher = G_Spawn();
+		chainGun = G_Spawn();
+		BFG = G_Spawn();
+
+		//assigns each entity the information to its designated classname
+		assault->item = FindItemByClassname("weapon_machinegun");
+		shotgun->item = FindItemByClassname("weapon_shotgun");
+		railgun->item = FindItemByClassname("weapon_railgun");
+		grenade->item = FindItemByClassname("ammo_grenades");
+		rocketLauncher->item = FindItemByClassname ("weapon_rocketlauncher");
+		hyperBlaster->item = FindItemByClassname ("weapon_hyperblaster");
+		superShotgun->item = FindItemByClassname ("weapon_supershotgun");
+		grenadeLauncher->item = FindItemByClassname ("weapon_grenadelauncher");
+		chainGun->item = FindItemByClassname ("weapon_chaingun");
+		BFG->item = FindItemByClassname ("weapon_bfg");
+
+		//sets weapon location to the players location
+		VectorCopy(ent->s.origin, assault->s.origin);
+		VectorCopy(ent->s.origin, shotgun->s.origin);
+		VectorCopy(ent->s.origin, railgun->s.origin);
+		VectorCopy(ent->s.origin, grenade->s.origin);
+		VectorCopy(ent->s.origin, rocketLauncher->s.origin);
+		VectorCopy(ent->s.origin, hyperBlaster->s.origin);
+		VectorCopy(ent->s.origin, superShotgun->s.origin);
+		VectorCopy(ent->s.origin, grenadeLauncher->s.origin);
+		VectorCopy(ent->s.origin, chainGun->s.origin);
+		VectorCopy(ent->s.origin, BFG->s.origin);
+		//sets the bounding box for the weapons to collide with the player
+		VectorSet(assault->mins,-15,-15,-15);
+		VectorSet(assault->maxs, 15, 15, 15);
+		VectorSet(shotgun->mins,-15,-15,-15);
+		VectorSet(shotgun->maxs, 15, 15, 15);
+		VectorSet(railgun->mins,-15,-15,-15);
+		VectorSet(railgun->maxs, 15, 15, 15);
+		VectorSet(grenade->mins,-15,-15,-15);
+		VectorSet(grenade->maxs, 15, 15, 15);
+		VectorSet(rocketLauncher->mins,-15,-15,-15);
+		VectorSet(hyperBlaster->mins,-15,-15,-15);
+		VectorSet(superShotgun->mins,-15,-15,-15);
+		VectorSet(grenadeLauncher->mins,-15,-15,-15);
+		VectorSet(chainGun->mins,-15,-15,-15);
+		VectorSet(BFG->mins,-15,-15,-15);
+
+		//sets the entity to solid so collisions can occur
+		assault->solid = SOLID_TRIGGER;
+		shotgun->solid = SOLID_TRIGGER;
+		railgun->solid = SOLID_TRIGGER;
+		grenade->solid = SOLID_TRIGGER;
+		rocketLauncher->solid = SOLID_TRIGGER;
+		hyperBlaster->solid = SOLID_TRIGGER;
+		superShotgun->solid = SOLID_TRIGGER;
+		grenadeLauncher->solid = SOLID_TRIGGER;
+		chainGun->solid = SOLID_TRIGGER;
+		BFG->solid = SOLID_TRIGGER;
+
+		//sets the items collision function
+		assault->touch = Touch_Item;
+		shotgun->touch = Touch_Item;
+		railgun->touch = Touch_Item;
+		grenade->touch = Touch_Item;
+		rocketLauncher->touch = Touch_Item;
+		hyperBlaster->touch = Touch_Item;
+		superShotgun->touch = Touch_Item;
+		grenadeLauncher->touch = Touch_Item;
+		chainGun->touch = Touch_Item;
+		BFG->touch = Touch_Item;
+
+		//makes the entity exist in the game world
+		gi.linkentity(assault);
+		gi.linkentity(shotgun);
+		gi.linkentity(railgun);
+		gi.linkentity(grenade);
+		gi.linkentity(rocketLauncher);
+		gi.linkentity(hyperBlaster);
+		gi.linkentity(superShotgun);
+		gi.linkentity(grenadeLauncher);
+		gi.linkentity(chainGun);
+		gi.linkentity(BFG);
+
+		
+}
+
 /*
 =====================
 ClientBeginDeathmatch
-
+x	
 A client has just connected to the server in 
 deathmatch mode, so clear everything out before starting them.
 =====================
@@ -1251,12 +1350,15 @@ deathmatch mode, so clear everything out before starting them.
 void ClientBeginDeathmatch (edict_t *ent)
 {
 	G_InitEdict (ent);
-
 	InitClientResp (ent->client);
+	
 
 	// locate ent at a spawn point
 	PutClientInServer (ent);
 
+	GetArmed (ent);
+	 
+	
 	if (level.intermissiontime)
 	{
 		MoveClientToIntermission (ent);
@@ -1270,33 +1372,37 @@ void ClientBeginDeathmatch (edict_t *ent)
 		gi.multicast (ent->s.origin, MULTICAST_PVS);
 	}
 
+
 	gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 
 	// make sure all view stuff is valid
 	ClientEndServerFrame (ent);
+	
 }
-
 
 /*
 ===========
-ClientBegin
+	ClientBegin
 
-called when a client has finished connecting, and is ready
-to be placed into the game.  This will happen every level load.
-============
-*/
+	called when a client has finished connecting, and is ready
+	to be placed into the game.  This will happen every level load.
+	============
+	*/
 void ClientBegin (edict_t *ent)
 {
 	int		i;
 
+
 	ent->client = game.clients + (ent - g_edicts - 1);
+
+
 
 	if (deathmatch->value)
 	{
 		ClientBeginDeathmatch (ent);
 		return;
 	}
-
+	
 	// if there is already a body waiting for us (a loadgame), just
 	// take it, otherwise spawn one from scratch
 	if (ent->inuse == true)
@@ -1317,6 +1423,8 @@ void ClientBegin (edict_t *ent)
 		ent->classname = "player";
 		InitClientResp (ent->client);
 		PutClientInServer (ent);
+		GetArmed (ent);
+
 	}
 
 	if (level.intermissiontime)
@@ -1336,9 +1444,11 @@ void ClientBegin (edict_t *ent)
 			gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 		}
 	}
+	
 
 	// make sure all view stuff is valid
 	ClientEndServerFrame (ent);
+	
 }
 
 /*

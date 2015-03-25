@@ -1,3 +1,17 @@
+/*
+Copyright (C) 1997-2001 Id Software, Inc.
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
 // g_combat.c
 
 #include "g_local.h"
@@ -5,7 +19,6 @@
 /*
 ============
 CanDamage
-
 Returns true if the inflictor can directly damage the target.  Used for
 explosions and melee attacks.
 ============
@@ -72,10 +85,20 @@ Killed
 */
 void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
 {
+
 	if (targ->health < -999)
 		targ->health = -999;
 
 	targ->enemy = attacker;
+	
+	/*if (targ->client)
+	{
+		
+		ChangeWeapon(attacker);
+		attacker->client->pers.weapon = attacker->client->newweapon;
+		attacker->client->newweapon = FindItem ("shotgun");
+		
+	}*/
 
 	if ((targ->svflags & SVF_MONSTER) && (targ->deadflag != DEAD_DEAD))
 	{
@@ -128,18 +151,15 @@ void SpawnDamage (int type, vec3_t origin, vec3_t normal, int damage)
 /*
 ============
 T_Damage
-
 targ		entity that is being damaged
 inflictor	entity that is causing the damage
 attacker	entity that caused the inflictor to damage targ
 	example: targ=monster, inflictor=rocket, attacker=player
-
 dir			direction of the attack
 point		point at which the damage is being inflicted
 normal		normal vector from that point
 damage		amount of damage being inflicted
 knockback	force to be applied against targ as a result of the damage
-
 dflags		these flags are used to control how T_Damage works
 	DAMAGE_RADIUS			damage was indirect (from a nearby explosion)
 	DAMAGE_NO_ARMOR			armor does not protect from this damage
