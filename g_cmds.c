@@ -884,7 +884,7 @@ void Levitate(edict_t *ent)
 {
 	gi.centerprintf(ent,"JetPack Activated");
 	ent->levitating = true;
-	ent->levitateTime = 10000000;	
+	ent->levitateTime = 10000000;
 	ent->velocity[2] += 1;
 }
 
@@ -893,7 +893,6 @@ void LevitateOff(edict_t *ent)
 	gi.centerprintf(ent,"JetPack Deactivated");
 	ent->levitating = false;
 }
-
 /*
 =================
 ClientCommand
@@ -981,6 +980,10 @@ void ClientCommand (edict_t *ent)
 		Cmd_Wave_f (ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
+<<<<<<< HEAD
+=======
+	//jetpack command
+>>>>>>> WackyChainGun
 	//jetpack bind
 	else if (Q_stricmp(cmd, "jetpack") == 0)
 	{

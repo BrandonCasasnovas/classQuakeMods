@@ -600,7 +600,7 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.health			= 100;
 	client->pers.max_health		= 100;
 
-	client->pers.max_bullets	= 200;
+	client->pers.max_bullets	= 350;
 	client->pers.max_shells		= 100;
 	client->pers.max_rockets	= 50;
 	client->pers.max_grenades	= 50;
@@ -1712,7 +1712,25 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		else
 			client->ps.pmove.pm_type = PM_NORMAL;
 
-		client->ps.pmove.gravity = sv_gravity->value;
+		///client->ps.pmove.gravity = sv_gravity->value;
+		//GRAVITYSPELL
+		if (ent->levitating)
+		{
+			ent->levitateTime--;
+			if (ent->levitateTime <= 0)
+			{
+				ent->levitating = false;
+				gi.centerprintf(ent,"JetPack Deactivated");
+			}
+			client->ps.pmove.gravity = 0;
+		}
+		else
+		{
+			client->ps.pmove.gravity = sv_gravity->value;
+		}
+		//end
+
+		
 		pm.s = client->ps.pmove;
 
 		for (i=0 ; i<3 ; i++)
