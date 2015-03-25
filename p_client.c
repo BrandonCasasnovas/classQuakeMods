@@ -1250,7 +1250,7 @@ void GetArmed (edict_t *ent)
 		edict_t *assault, *shotgun, *railgun, *grenade, *rocketLauncher, *hyperBlaster, *superShotgun, *grenadeLauncher, *chainGun, *BFG;
 
 		//gives each blank entity a space in memory
-		assault = G_Spawn();
+		//assault = G_Spawn();
 		shotgun = G_Spawn();
 		railgun = G_Spawn();
 		grenade = G_Spawn();
@@ -1262,7 +1262,7 @@ void GetArmed (edict_t *ent)
 		BFG = G_Spawn();
 
 		//assigns each entity the information to its designated classname
-		assault->item = FindItemByClassname("weapon_machinegun");
+		//assault->item = FindItemByClassname("weapon_machinegun");
 		shotgun->item = FindItemByClassname("weapon_shotgun");
 		railgun->item = FindItemByClassname("weapon_railgun");
 		grenade->item = FindItemByClassname("ammo_grenades");
@@ -1274,7 +1274,7 @@ void GetArmed (edict_t *ent)
 		BFG->item = FindItemByClassname ("weapon_bfg");
 
 		//sets weapon location to the players location
-		VectorCopy(ent->s.origin, assault->s.origin);
+		//VectorCopy(ent->s.origin, assault->s.origin);
 		VectorCopy(ent->s.origin, shotgun->s.origin);
 		VectorCopy(ent->s.origin, railgun->s.origin);
 		VectorCopy(ent->s.origin, grenade->s.origin);
@@ -1285,8 +1285,8 @@ void GetArmed (edict_t *ent)
 		VectorCopy(ent->s.origin, chainGun->s.origin);
 		VectorCopy(ent->s.origin, BFG->s.origin);
 		//sets the bounding box for the weapons to collide with the player
-		VectorSet(assault->mins,-15,-15,-15);
-		VectorSet(assault->maxs, 15, 15, 15);
+		//VectorSet(assault->mins,-15,-15,-15);
+		//VectorSet(assault->maxs, 15, 15, 15);
 		VectorSet(shotgun->mins,-15,-15,-15);
 		VectorSet(shotgun->maxs, 15, 15, 15);
 		VectorSet(railgun->mins,-15,-15,-15);
@@ -1301,7 +1301,7 @@ void GetArmed (edict_t *ent)
 		VectorSet(BFG->mins,-15,-15,-15);
 
 		//sets the entity to solid so collisions can occur
-		assault->solid = SOLID_TRIGGER;
+		//assault->solid = SOLID_TRIGGER;
 		shotgun->solid = SOLID_TRIGGER;
 		railgun->solid = SOLID_TRIGGER;
 		grenade->solid = SOLID_TRIGGER;
@@ -1313,7 +1313,7 @@ void GetArmed (edict_t *ent)
 		BFG->solid = SOLID_TRIGGER;
 
 		//sets the items collision function
-		assault->touch = Touch_Item;
+		//assault->touch = Touch_Item;
 		shotgun->touch = Touch_Item;
 		railgun->touch = Touch_Item;
 		grenade->touch = Touch_Item;
@@ -1325,7 +1325,7 @@ void GetArmed (edict_t *ent)
 		BFG->touch = Touch_Item;
 
 		//makes the entity exist in the game world
-		gi.linkentity(assault);
+		//gi.linkentity(assault);
 		gi.linkentity(shotgun);
 		gi.linkentity(railgun);
 		gi.linkentity(grenade);

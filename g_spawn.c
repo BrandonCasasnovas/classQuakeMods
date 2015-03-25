@@ -127,10 +127,10 @@ void SP_turret_driver (edict_t *self);
 
 
 spawn_t	spawns[] = {
-	{"item_health", SP_item_health},
-	{"item_health_small", SP_item_health_small},
-	{"item_health_large", SP_item_health_large},
-	{"item_health_mega", SP_item_health_mega},
+	{"item_healthx", SP_item_health},
+	{"item_health_smallx", SP_item_health_small},
+	{"item_health_largex", SP_item_health_large},
+	{"item_health_megax", SP_item_health_mega},
 
 	{"info_player_start", SP_info_player_start},
 	{"info_player_deathmatch", SP_info_player_deathmatch},
