@@ -937,8 +937,8 @@ void Machinegun_Fire (edict_t *ent)
 	vec3_t		start;
 	vec3_t		forward, right;
 	vec3_t		angles;
-	int			damage = 8;
-	int			kick = 2;
+	int			damage = 25;
+	int			kick = 10;
 	vec3_t		offset;
 
 	if (!(ent->client->buttons & BUTTON_ATTACK))
@@ -983,14 +983,14 @@ void Machinegun_Fire (edict_t *ent)
 	if (!deathmatch->value)
 	{
 		ent->client->machinegun_shots++;
-		if (ent->client->machinegun_shots > 9)
-			ent->client->machinegun_shots = 9;
+		if (ent->client->machinegun_shots > 3)
+			ent->client->machinegun_shots = 3;
 	}
 
 	// get start / end positions
 	VectorAdd (ent->client->v_angle, ent->client->kick_angles, angles);
 	AngleVectors (angles, forward, right, NULL);
-	VectorSet(offset, 0, 8, ent->viewheight-8);
+	VectorSet(offset, 0, 16, ent->viewheight-16);
 	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
 	fire_bullet (ent, start, forward, damage, kick, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_MACHINEGUN);
 
@@ -1007,12 +1007,12 @@ void Machinegun_Fire (edict_t *ent)
 	ent->client->anim_priority = ANIM_ATTACK;
 	if (ent->client->ps.pmove.pm_flags & PMF_DUCKED)
 	{
-		ent->s.frame = FRAME_crattak1 - (int) (random()+0.25);
+		ent->s.frame = FRAME_crattak1 - (int) (random()+0.75);
 		ent->client->anim_end = FRAME_crattak9;
 	}
 	else
 	{
-		ent->s.frame = FRAME_attack1 - (int) (random()+0.25);
+		ent->s.frame = FRAME_attack1 - (int) (random()+0.75);
 		ent->client->anim_end = FRAME_attack8;
 	}
 }
@@ -1037,9 +1037,9 @@ void Chaingun_Fire (edict_t *ent)
 	int			kick = 2;
 
 	if (deathmatch->value)
-		damage = 6;
+		damage = 30;
 	else
-		damage = 8;
+		damage = 35;
 
 	if (ent->client->ps.gunframe == 5)
 		gi.sound(ent, CHAN_AUTO, gi.soundindex("weapons/chngnu1a.wav"), 1, ATTN_IDLE, 0);
@@ -1116,8 +1116,8 @@ void Chaingun_Fire (edict_t *ent)
 
 	for (i=0 ; i<3 ; i++)
 	{
-		ent->client->kick_origin[i] = crandom() * 0.35;
-		ent->client->kick_angles[i] = crandom() * 0.7;
+		ent->client->kick_origin[i] = crandom() * 18.35;
+		ent->client->kick_angles[i] = crandom() * 20.7;
 	}
 
 	for (i=0 ; i<shots ; i++)
