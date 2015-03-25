@@ -980,10 +980,6 @@ void ClientCommand (edict_t *ent)
 		Cmd_Wave_f (ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
-<<<<<<< HEAD
-=======
-	//jetpack command
->>>>>>> WackyChainGun
 	//jetpack bind
 	else if (Q_stricmp(cmd, "jetpack") == 0)
 	{

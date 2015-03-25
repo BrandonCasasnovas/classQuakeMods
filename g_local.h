@@ -1098,6 +1098,9 @@ struct edict_s
 	qboolean		levitating;
 	qboolean		levitateoff;
 	int				levitateTime;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 125b1ce52ba4f7f8ea9ba34b90ceca40622fcead
 };
 

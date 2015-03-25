@@ -1,6 +1,7 @@
 #include "g_local.h"
 #include "m_player.h"
 
+
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest (edict_t *ent);
@@ -1729,8 +1730,6 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			client->ps.pmove.gravity = sv_gravity->value;
 		}
 		//end
-
-		
 		pm.s = client->ps.pmove;
 
 		for (i=0 ; i<3 ; i++)
