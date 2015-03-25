@@ -214,38 +214,38 @@ NoAmmoWeaponChange
 */
 void NoAmmoWeaponChange (edict_t *ent)
 {
-	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("slugs"))]
-		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("railgun"))] )
+	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("slugs"))])
+		
 	{
 		ent->client->newweapon = FindItem ("railgun");
 		return;
 	}
-	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("cells"))]
-		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("hyperblaster"))] )
+	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("cells"))])
+	
 	{
 		ent->client->newweapon = FindItem ("hyperblaster");
 		return;
 	}
-	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("bullets"))]
-		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("chaingun"))] )
+	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("bullets"))]>=100)
+		
 	{
 		ent->client->newweapon = FindItem ("chaingun");
 		return;
 	}
-	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("bullets"))]
-		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("machinegun"))] )
+	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("bullets"))]<=50)
+		
 	{
 		ent->client->newweapon = FindItem ("machinegun");
 		return;
 	}
-	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("shells"))] > 1
-		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("super shotgun"))] )
+	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("shells"))] <= 5)
+		
 	{
 		ent->client->newweapon = FindItem ("super shotgun");
 		return;
 	}
-	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("shells"))]
-		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("shotgun"))] )
+	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("shells"))] >=6)
+	
 	{
 		ent->client->newweapon = FindItem ("shotgun");
 		return;
@@ -1400,7 +1400,7 @@ void weapon_bfg_fire (edict_t *ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (! ( (int)dmflags->value & DF_INFINITE_AMMO ) )
-		ent->client->pers.inventory[ent->client->ammo_index] -= 50;
+		ent->client->pers.inventory[ent->client->ammo_index] -= 10;
 }
 
 void Weapon_BFG (edict_t *ent)

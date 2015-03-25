@@ -91,14 +91,12 @@ void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, v
 
 	targ->enemy = attacker;
 	
-	/*if (targ->client)
+	if (targ->client)
 	{
 		
-		ChangeWeapon(attacker);
-		attacker->client->pers.weapon = attacker->client->newweapon;
-		attacker->client->newweapon = FindItem ("shotgun");
+		NoAmmoWeaponChange(attacker);
 		
-	}*/
+	}
 
 	if ((targ->svflags & SVF_MONSTER) && (targ->deadflag != DEAD_DEAD))
 	{
