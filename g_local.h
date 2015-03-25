@@ -272,6 +272,8 @@ typedef struct
 	int			num_items;
 
 	qboolean	autosaved;
+
+	qboolean	numReadied;
 } game_locals_t;
 
 
@@ -1093,5 +1095,8 @@ struct edict_s
 	// common data blocks
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
+	qboolean		levitating;
+	qboolean		levitateoff;
+	int				levitateTime;
 };
 
